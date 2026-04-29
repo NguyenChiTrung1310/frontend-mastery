@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, type ComponentType } from 'react';
-import { Columns2, Square, Eye, Lightbulb } from 'lucide-react';
+import { useState, type ReactNode } from 'react';
+import { Columns2, Square, Eye, Lightbulb, BookOpen } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Markdown } from '@/components/challenge/markdown';
 import { ConsolePanel } from '@/components/challenge/console-panel';
 import { PreviewErrorBoundary } from '@/components/challenge/preview-error-boundary';
@@ -18,19 +19,20 @@ type ViewMode = 'split' | 'boilerplate' | 'solution';
 interface ChallengeWorkspaceProps {
   meta: ChallengeMeta;
   readme: string;
-  Boilerplate: ComponentType;
-  Solution: ComponentType;
+  boilerplateSlot: ReactNode;
+  solutionSlot: ReactNode;
   showConsole?: boolean;
 }
 
 export function ChallengeWorkspace({
   meta,
   readme,
-  Boilerplate,
-  Solution,
+  boilerplateSlot,
+  solutionSlot,
   showConsole = false,
 }: ChallengeWorkspaceProps): React.JSX.Element {
   const [mode, setMode] = useState<ViewMode>('split');
+  const [readmeOpen, setReadmeOpen] = useState(false);
 
   return (
     <div className="flex h-screen flex-col">
@@ -57,21 +59,34 @@ export function ChallengeWorkspace({
             <h1 className="text-xl font-semibold leading-tight">{meta.title}</h1>
             <p className="mt-1 text-sm text-muted-foreground">{meta.description}</p>
           </div>
-          <ViewModeToggle mode={mode} onChange={setMode} />
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={() => setReadmeOpen(true)}>
+              <BookOpen className="mr-1.5 h-3.5 w-3.5" />
+              Instructions
+            </Button>
+            <ViewModeToggle mode={mode} onChange={setMode} />
+          </div>
         </div>
       </header>
 
-      {/* Body: instructions on left, preview(s) on right */}
-      <div className="grid flex-1 grid-cols-[420px_1fr] overflow-hidden">
-        <aside className="border-r bg-card">
-          <ScrollArea className="h-full">
-            <div className="p-6">
+      {/* README drawer */}
+      <Sheet open={readmeOpen} onOpenChange={setReadmeOpen}>
+        <SheetContent side="left" className="flex w-1/2 flex-col">
+          <SheetHeader>
+            <SheetTitle>{meta.title}</SheetTitle>
+          </SheetHeader>
+          <ScrollArea className="flex-1">
+            <div className="pr-4">
               <Markdown content={readme} />
             </div>
+            <ScrollBar />
           </ScrollArea>
-        </aside>
+        </SheetContent>
+      </Sheet>
 
-        <main className="flex flex-col overflow-hidden">
+      {/* Body: full-width previews */}
+      <div className="flex flex-1 overflow-hidden">
+        <main className="flex flex-1 flex-col overflow-hidden">
           <div
             className={cn(
               'grid flex-1 overflow-hidden',
@@ -85,7 +100,7 @@ export function ChallengeWorkspace({
                 icon={<Eye className="h-4 w-4 text-blue-500" />}
               >
                 <PreviewErrorBoundary label="Boilerplate">
-                  <Boilerplate />
+                  {boilerplateSlot}
                 </PreviewErrorBoundary>
               </PreviewPane>
             ) : null}
@@ -98,7 +113,7 @@ export function ChallengeWorkspace({
                 bordered={mode === 'split'}
               >
                 <PreviewErrorBoundary label="Solution">
-                  <Solution />
+                  {solutionSlot}
                 </PreviewErrorBoundary>
               </PreviewPane>
             ) : null}
@@ -141,6 +156,7 @@ function PreviewPane({
       </div>
       <ScrollArea className="flex-1">
         <div className="p-6">{children}</div>
+        <ScrollBar />
       </ScrollArea>
     </section>
   );

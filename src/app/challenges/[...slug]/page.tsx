@@ -67,12 +67,16 @@ export default function ChallengePage({ params }: PageProps): React.JSX.Element 
   // JS / DSA challenges use the console heavily — surface the panel for them.
   const showConsole = entry.category === 'javascript' || entry.category === 'dsa';
 
+  // Strip non-serializable fields before the Server→Client boundary.
+  // `loaders` are functions; passing them as props to a Client Component throws.
+  const { loaders: _, readme, ...meta } = entry;
+
   return (
     <ChallengeWorkspace
-      meta={entry}
-      readme={entry.readme}
-      Boilerplate={Boilerplate}
-      Solution={Solution}
+      meta={meta}
+      readme={readme}
+      boilerplateSlot={<Boilerplate />}
+      solutionSlot={<Solution />}
       showConsole={showConsole}
     />
   );

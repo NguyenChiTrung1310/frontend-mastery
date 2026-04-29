@@ -30,5 +30,7 @@ When you detect any of these signals, read the matching `SKILL.md` *before* resp
 - User pastes code and asks for review → `code-reviewer`
 - User asks "why" about a React/TS/Next concept → `concept-explainer`
 - User says "add a challenge" / "scaffold a new" → `challenge-author`
+- Writing or editing any `.ts` / `.tsx` file in this repo → `typescript-best-practices`
+- Fixing a type error, lint error, or build failure → `typescript-best-practices`
 
 For everything else, the conventions in `AGENTS.md` apply.

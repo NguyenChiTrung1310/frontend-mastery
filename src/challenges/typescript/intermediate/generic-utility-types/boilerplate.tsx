@@ -26,15 +26,11 @@ interface User {
 
 // @ts-expect-error -- not yet implemented
 type _t1 = Expect<Equal<MyPick<User, 'id' | 'name'>, { id: number; name: string }>>;
-// @ts-expect-error -- not yet implemented
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore -- MyOmit<unknown> doesn't error with Equal<unknown,...> in TS5; @ts-expect-error would itself be flagged unused
 type _t2 = Expect<Equal<MyOmit<User, 'address'>, { id: number; name: string }>>;
 // @ts-expect-error -- not yet implemented
-type _t3 = Expect<
-  Equal<
-    DeepPartial<User>,
-    { id?: number; name?: string; address?: { street?: string; city?: string } }
-  >
->;
+type _t3 = Expect<Equal<DeepPartial<User>, { id?: number; name?: string; address?: { street?: string; city?: string } }>>;
 // @ts-expect-error -- not yet implemented
 type _t4 = Expect<Equal<PromiseValue<Promise<Promise<string>>>, string>>;
 

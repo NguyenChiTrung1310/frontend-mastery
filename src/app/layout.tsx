@@ -4,6 +4,7 @@ import './globals.css';
 import { Sidebar } from '@/components/layout/sidebar';
 import { MswProvider } from '@/mocks/msw-provider';
 import { getGroupedChallenges } from '@/registry/challenges';
+import type { ChallengeCategory, ChallengeDifficulty } from '@/lib/types';
 
 export const metadata: Metadata = {
   title: 'Frontend Mastery — Local Learning Platform',
@@ -18,7 +19,7 @@ export default function RootLayout({
 }): React.JSX.Element {
   // Strip non-serializable fields (loaders, readme) before passing to the Client Component Sidebar.
   const grouped = getGroupedChallenges();
-  const sidebarData: Record<string, { slug: string; title: string; category: string; difficulty: string }[]> = {};
+  const sidebarData: Record<string, { slug: string; title: string; category: ChallengeCategory; difficulty: ChallengeDifficulty }[]> = {};
   for (const [category, items] of grouped) {
     sidebarData[category] = items.map(({ slug, title, category: cat, difficulty }) => ({
       slug,

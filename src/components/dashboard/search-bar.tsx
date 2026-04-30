@@ -4,17 +4,20 @@ import { useEffect, useRef, useState } from 'react';
 import { Search } from 'lucide-react';
 
 import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
 
 interface SearchBarProps {
   value: string;
   onChange: (next: string) => void;
   debounceMs?: number;
+  className?: string;
 }
 
 export function SearchBar({
   value,
   onChange,
   debounceMs = 150,
+  className,
 }: SearchBarProps): React.JSX.Element {
   const [local, setLocal] = useState(value);
   const lastFlushed = useRef(value);
@@ -36,7 +39,7 @@ export function SearchBar({
   }, [local, debounceMs, onChange]);
 
   return (
-    <div className="relative">
+    <div className={cn("relative", className)}>
       <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
       <Input
         type="search"

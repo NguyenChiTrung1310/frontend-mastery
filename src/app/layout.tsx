@@ -43,7 +43,7 @@ export default function RootLayout({
             <CommandPaletteProvider items={commandItems}>
               <div className="flex min-h-screen">
                 <Sidebar />
-                <div className="min-w-0 flex-1">{children}</div>
+                <div className="min-w-0 flex-1 ml-72">{children}</div>
               </div>
             </CommandPaletteProvider>
           </MswProvider>

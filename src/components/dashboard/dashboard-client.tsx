@@ -47,7 +47,7 @@ export function DashboardClient({ items }: DashboardClientProps): React.JSX.Elem
       </div>
 
       <div className="grid gap-3 md:grid-cols-[1fr_auto] md:items-center">
-        <SearchBar value={criteria.query} onChange={setQuery} />
+        <SearchBar value={criteria.query} onChange={setQuery} className="max-w-lg" />
         <LevelChips selected={criteria.levels} onToggle={toggleLevel} />
       </div>
 

@@ -24,7 +24,7 @@ export function Sidebar(): React.JSX.Element {
   const items = toListItems();
 
   return (
-    <aside className="flex h-screen w-72 shrink-0 flex-col border-r bg-card">
+    <aside className="flex h-screen fixed z-50 w-72 shrink-0 flex-col border-r bg-card">
       <div className="px-6 py-5">
         <Link href="/" className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground">

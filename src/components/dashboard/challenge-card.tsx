@@ -21,20 +21,11 @@ export function ChallengeCard({ item }: ChallengeCardProps): React.JSX.Element {
 
   return (
     <Card className="group relative flex h-full flex-col transition-shadow hover:shadow-md">
-      <button
-        type="button"
-        aria-label={starred ? 'Remove bookmark' : 'Bookmark challenge'}
-        aria-pressed={starred}
-        onClick={() => toggle(item.slug)}
-        className={cn(
-          'absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground',
-          starred && 'text-foreground',
-        )}
-      >
+      {/* <Button aria-pressed={starred} aria-label={starred ? 'Remove bookmark' : 'Bookmark challenge'} size='icon' variant='ghost' className="absolute right-4 top-[18px] w-8 h-8" onClick={() => toggle(item.slug)}>
         <Star className={cn('h-4 w-4', starred && 'fill-current')} />
-      </button>
+      </Button> */}
 
-      <CardHeader className="pr-12">
+      <CardHeader>
         <div className="mb-2 flex items-center gap-2">
           <Badge variant="outline" className="capitalize">
             {item.category}
@@ -51,6 +42,9 @@ export function ChallengeCard({ item }: ChallengeCardProps): React.JSX.Element {
               {item.estimatedMinutes}m
             </span>
           ) : null}
+          <Button aria-pressed={starred} aria-label={starred ? 'Remove bookmark' : 'Bookmark challenge'} size='icon' variant='ghost' className="w-8 h-8" onClick={() => toggle(item.slug)}>
+            <Star className={cn('h-4 w-4', starred && 'fill-current')} />
+          </Button>
         </div>
         <CardTitle className="text-base">{item.title}</CardTitle>
         <CardDescription className="line-clamp-2">{item.description}</CardDescription>

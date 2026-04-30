@@ -3,8 +3,10 @@ import './globals.css';
 
 import { Sidebar } from '@/components/layout/sidebar';
 import { MswProvider } from '@/mocks/msw-provider';
-import { getGroupedChallenges } from '@/registry/challenges';
-import type { ChallengeCategory, ChallengeDifficulty } from '@/lib/types';
+import { ThemeProvider } from '@/components/theme-provider';
+import { CommandPaletteProvider } from '@/components/command/command-palette-provider';
+import { CHALLENGES } from '@/registry/challenges';
+import type { ChallengeListItem } from '@/lib/challenge-list-item';
 
 export const metadata: Metadata = {
   title: 'Frontend Mastery — Local Learning Platform',
@@ -12,32 +14,40 @@ export const metadata: Metadata = {
     'Solve JS, TS, React, Next.js, and DSA challenges by editing files in your IDE.',
 };
 
+function getCommandItems(): ChallengeListItem[] {
+  return CHALLENGES.map(
+    ({ slug, title, category, difficulty, description, tags, estimatedMinutes }) => ({
+      slug,
+      title,
+      category,
+      difficulty,
+      description,
+      tags,
+      estimatedMinutes,
+    }),
+  );
+}
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }): React.JSX.Element {
-  // Strip non-serializable fields (loaders, readme) before passing to the Client Component Sidebar.
-  const grouped = getGroupedChallenges();
-  const sidebarData: Record<string, { slug: string; title: string; category: ChallengeCategory; difficulty: ChallengeDifficulty }[]> = {};
-  for (const [category, items] of grouped) {
-    sidebarData[category] = items.map(({ slug, title, category: cat, difficulty }) => ({
-      slug,
-      title,
-      category: cat,
-      difficulty,
-    }));
-  }
+  const commandItems = getCommandItems();
 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen bg-background font-sans antialiased">
-        <MswProvider>
-          <div className="flex min-h-screen">
-            <Sidebar grouped={sidebarData} />
-            <div className="min-w-0 flex-1">{children}</div>
-          </div>
-        </MswProvider>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <MswProvider>
+            <CommandPaletteProvider items={commandItems}>
+              <div className="flex min-h-screen">
+                <Sidebar />
+                <div className="min-w-0 flex-1">{children}</div>
+              </div>
+            </CommandPaletteProvider>
+          </MswProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

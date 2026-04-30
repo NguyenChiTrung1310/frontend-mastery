@@ -36,9 +36,6 @@ function renderApiState(_state: ApiState): string {
   return 'not implemented';
 }
 
-// ❌ TODO: model as a discriminated union
-type FormState = unknown;
-
 export default function DiscriminatedUnionsBoilerplate(): React.JSX.Element {
   const states: ApiState[] = [
     { isLoading: true, isError: false, isSuccess: false },

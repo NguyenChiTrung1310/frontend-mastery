@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { findChallenge, getAllChallengePaths } from '@/registry/challenges';
 import type { ChallengeCategory, ChallengeDifficulty } from '@/lib/types';
 import { ChallengeWorkspace } from '@/components/challenge/challenge-workspace';
+import { RecordVisit } from '@/components/challenge/record-visit';
 
 interface PageProps {
   params: { slug: string[] };
@@ -72,13 +73,24 @@ export default function ChallengePage({ params }: PageProps): React.JSX.Element 
   const { loaders: _, readme, ...meta } = entry;
 
   return (
-    <ChallengeWorkspace
-      meta={meta}
-      readme={readme}
-      boilerplateSlot={<Boilerplate />}
-      solutionSlot={<Solution />}
-      showConsole={showConsole}
-    />
+    <>
+      <RecordVisit
+        record={{
+          slug: meta.slug,
+          title: meta.title,
+          category: meta.category,
+          difficulty: meta.difficulty,
+          estimatedMinutes: meta.estimatedMinutes,
+        }}
+      />
+      <ChallengeWorkspace
+        meta={meta}
+        readme={readme}
+        boilerplateSlot={<Boilerplate />}
+        solutionSlot={<Solution />}
+        showConsole={showConsole}
+      />
+    </>
   );
 }
 

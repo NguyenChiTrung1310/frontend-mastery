@@ -7,33 +7,6 @@
  * make the `Expect<Equal<...>>` lines below compile.
  */
 
-// ❌ TODO: implement
-type MyPick<T, K extends keyof T> = unknown;
-type MyOmit<T, K extends keyof T> = unknown;
-type DeepPartial<T> = unknown;
-type PromiseValue<T> = unknown;
-
-// --- Type-level tests (these should compile when implementations are correct) ---
-type Equal<X, Y> =
-  (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2 ? true : false;
-type Expect<T extends true> = T;
-
-interface User {
-  id: number;
-  name: string;
-  address: { street: string; city: string };
-}
-
-// @ts-expect-error -- not yet implemented
-type _t1 = Expect<Equal<MyPick<User, 'id' | 'name'>, { id: number; name: string }>>;
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore -- MyOmit<unknown> doesn't error with Equal<unknown,...> in TS5; @ts-expect-error would itself be flagged unused
-type _t2 = Expect<Equal<MyOmit<User, 'address'>, { id: number; name: string }>>;
-// @ts-expect-error -- not yet implemented
-type _t3 = Expect<Equal<DeepPartial<User>, { id?: number; name?: string; address?: { street?: string; city?: string } }>>;
-// @ts-expect-error -- not yet implemented
-type _t4 = Expect<Equal<PromiseValue<Promise<Promise<string>>>, string>>;
-
 export default function GenericUtilityTypesBoilerplate(): React.JSX.Element {
   return (
     <div className="space-y-3">

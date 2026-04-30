@@ -41,7 +41,14 @@ export function ConsolePanel(): React.JSX.Element {
       (level: LogLevel) =>
       (...args: unknown[]): void => {
         original[level](...args);
-        setLogs((prev) => [...prev, { id: idRef.current++, level, args, ts: Date.now() }]);
+        // Capture id and ts synchronously, but defer setState out of any render-phase
+        // call stack. React's own dev warnings fire via console.error during render,
+        // which would otherwise trigger setState-during-render.
+        const id = idRef.current++;
+        const ts = Date.now();
+        setTimeout(() => {
+          setLogs((prev) => [...prev, { id, level, args, ts }]);
+        }, 0);
       };
 
     console.log = intercept('log');

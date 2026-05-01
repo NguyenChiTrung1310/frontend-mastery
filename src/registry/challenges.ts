@@ -23,6 +23,8 @@ import useSyncExternalStoreReadme from '@/challenges/react/advanced/use-sync-ext
 import useFetchRaceConditionReadme from '@/challenges/react/intermediate/use-fetch-race-condition/README.md';
 import useEffectCleanupReadme from '@/challenges/react/intermediate/use-effect-cleanup/README.md';
 import staleClosureUseEffectReadme from '@/challenges/react/intermediate/stale-closure-useeffect/README.md';
+import optimisticUiRollbackReadme from '@/challenges/react/intermediate/optimistic-ui-rollback/README.md';
+import usecallbackReferentialStabilityReadme from '@/challenges/react/intermediate/usecallback-referential-stability/README.md';
 import discriminatedUnionsReadme from '@/challenges/typescript/basic/discriminated-unions/README.md';
 import genericUtilityTypesReadme from '@/challenges/typescript/intermediate/generic-utility-types/README.md';
 import typedEventEmitterReadme from '@/challenges/typescript/intermediate/typed-event-emitter/README.md';
@@ -116,6 +118,20 @@ export const CHALLENGES: readonly ChallengeEntry[] = [
     },
   },
   {
+    slug: 'optimistic-ui-rollback',
+    title: 'Optimistic UI with Rollback',
+    category: 'react',
+    difficulty: 'intermediate',
+    description: 'Update state instantly on user action, then roll back cleanly if the server fails.',
+    tags: ['optimistic-ui', 'async', 'ux', 'error-handling', 'useState'],
+    estimatedMinutes: 35,
+    readme: optimisticUiRollbackReadme as unknown as string,
+    loaders: {
+      boilerplate: () => import('@/challenges/react/intermediate/optimistic-ui-rollback/boilerplate'),
+      solution: () => import('@/challenges/react/intermediate/optimistic-ui-rollback/solution'),
+    },
+  },
+  {
     slug: 'stale-closure-useeffect',
     title: 'Stale Closure in useEffect',
     category: 'react',
@@ -141,6 +157,22 @@ export const CHALLENGES: readonly ChallengeEntry[] = [
     loaders: {
       boilerplate: () => import('@/challenges/react/intermediate/use-effect-cleanup/boilerplate'),
       solution: () => import('@/challenges/react/intermediate/use-effect-cleanup/solution'),
+    },
+  },
+  {
+    slug: 'usecallback-referential-stability',
+    title: 'useCallback & Referential Stability',
+    category: 'react',
+    difficulty: 'intermediate',
+    description: 'Understand why inline functions silently break React.memo and when useCallback helps.',
+    tags: ['useCallback', 'React.memo', 'referential-equality', 'performance'],
+    estimatedMinutes: 35,
+    readme: usecallbackReferentialStabilityReadme as unknown as string,
+    loaders: {
+      boilerplate: () =>
+        import('@/challenges/react/intermediate/usecallback-referential-stability/boilerplate'),
+      solution: () =>
+        import('@/challenges/react/intermediate/usecallback-referential-stability/solution'),
     },
   },
   {

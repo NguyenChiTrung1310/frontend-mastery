@@ -22,6 +22,7 @@ import renderOptimizationReadme from '@/challenges/react/advanced/render-optimiz
 import useSyncExternalStoreReadme from '@/challenges/react/advanced/use-sync-external-store/README.md';
 import useFetchRaceConditionReadme from '@/challenges/react/intermediate/use-fetch-race-condition/README.md';
 import useEffectCleanupReadme from '@/challenges/react/intermediate/use-effect-cleanup/README.md';
+import staleClosureUseEffectReadme from '@/challenges/react/intermediate/stale-closure-useeffect/README.md';
 import discriminatedUnionsReadme from '@/challenges/typescript/basic/discriminated-unions/README.md';
 import genericUtilityTypesReadme from '@/challenges/typescript/intermediate/generic-utility-types/README.md';
 import typedEventEmitterReadme from '@/challenges/typescript/intermediate/typed-event-emitter/README.md';
@@ -112,6 +113,20 @@ export const CHALLENGES: readonly ChallengeEntry[] = [
     loaders: {
       boilerplate: () => import('@/challenges/dsa/intermediate/lru-cache/boilerplate'),
       solution: () => import('@/challenges/dsa/intermediate/lru-cache/solution'),
+    },
+  },
+  {
+    slug: 'stale-closure-useeffect',
+    title: 'Stale Closure in useEffect',
+    category: 'react',
+    difficulty: 'intermediate',
+    description: 'Diagnose and fix stale state values captured inside useEffect callbacks.',
+    tags: ['hooks', 'closures', 'useRef', 'useEffect', 'deps'],
+    estimatedMinutes: 30,
+    readme: staleClosureUseEffectReadme as unknown as string,
+    loaders: {
+      boilerplate: () => import('@/challenges/react/intermediate/stale-closure-useeffect/boilerplate'),
+      solution: () => import('@/challenges/react/intermediate/stale-closure-useeffect/solution'),
     },
   },
   {

@@ -149,6 +149,34 @@ export default function LruCacheSolution(): React.JSX.Element {
           </li>
         ))}
       </ul>
+
+      <div className="rounded-md border border-border bg-card p-4 space-y-3">
+        <p className="text-sm font-semibold">✅ Why This Works</p>
+        <ul className="text-xs text-muted-foreground space-y-1 list-disc list-inside">
+          <li>JavaScript <code className="rounded bg-muted px-1">Map</code> iterates in insertion order — the first key is always the LRU, so eviction is O(1) without a doubly linked list.</li>
+          <li>On <code className="rounded bg-muted px-1">get</code>, the key is deleted then re-inserted to move it to the MRU (tail) position — the <code className="rounded bg-muted px-1">delete+set</code> dance is the entire recency update.</li>
+          <li>On <code className="rounded bg-muted px-1">put</code> at capacity, <code className="rounded bg-muted px-1">keys().next().value</code> retrieves the LRU key in O(1) for immediate eviction.</li>
+        </ul>
+        <div className="grid grid-cols-2 gap-3 mt-4">
+          <div className="rounded-md border border-red-800 bg-red-950/40 p-3">
+            <p className="text-xs font-semibold text-red-400 mb-2">❌ Before</p>
+            <pre className="text-xs text-red-200 whitespace-pre-wrap">{`// O(n) eviction — scan all entries
+get(key) {
+  // no recency update → wrong eviction order
+  return this.store[key];
+}`}</pre>
+          </div>
+          <div className="rounded-md border border-green-800 bg-green-950/40 p-3">
+            <p className="text-xs font-semibold text-green-400 mb-2">✅ After</p>
+            <pre className="text-xs text-green-200 whitespace-pre-wrap">{`get(key) {
+  const value = this.store.get(key)!;
+  this.store.delete(key); // remove
+  this.store.set(key, value); // re-insert → MRU
+  return value;
+}`}</pre>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

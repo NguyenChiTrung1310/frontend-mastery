@@ -71,6 +71,35 @@ export default function AsyncIteratorSolution(): React.JSX.Element {
       <ul className="space-y-1 text-sm font-mono">
         {items.map((item, i) => <li key={i} className="rounded bg-green-50 border border-green-300 px-2 py-1 text-green-800">{item}</li>)}
       </ul>
+
+      <div className="rounded-md border border-border bg-card p-4 space-y-3">
+        <p className="text-sm font-semibold">✅ Why This Works</p>
+        <ul className="text-xs text-muted-foreground space-y-1 list-disc list-inside">
+          <li>The generator <code className="rounded bg-muted px-1">yield</code>s each item from the current page before fetching the next — the consumer sees results stream in rather than waiting for all pages.</li>
+          <li><code className="rounded bg-muted px-1">for await...of</code> calls <code className="rounded bg-muted px-1">.next()</code> on the generator each iteration — the generator suspends at each <code className="rounded bg-muted px-1">yield</code> and only resumes when the consumer is ready.</li>
+          <li>This is natural backpressure: the generator fetches the next page only after the consumer has processed the current one, avoiding wasteful eager collection.</li>
+        </ul>
+        <div className="grid grid-cols-2 gap-3 mt-4">
+          <div className="rounded-md border border-red-800 bg-red-950/40 p-3">
+            <p className="text-xs font-semibold text-red-400 mb-2">❌ Before</p>
+            <pre className="text-xs text-red-200 whitespace-pre-wrap">{`// Collects ALL pages before yielding
+const all = [];
+while (hasMore) {
+  all.push(...await fetchPage(page++));
+}
+yield* all; // nothing shows until done`}</pre>
+          </div>
+          <div className="rounded-md border border-green-800 bg-green-950/40 p-3">
+            <p className="text-xs font-semibold text-green-400 mb-2">✅ After</p>
+            <pre className="text-xs text-green-200 whitespace-pre-wrap">{`while (true) {
+  const { items, hasMore } = await fetchPage(page);
+  for (const item of items) yield item; // stream
+  if (!hasMore) break;
+  page++;
+}`}</pre>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

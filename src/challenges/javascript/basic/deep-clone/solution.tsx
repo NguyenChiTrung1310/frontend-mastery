@@ -72,6 +72,33 @@ export default function DeepCloneSolution(): React.JSX.Element {
         <p className="text-green-700">clone.scores: [{clone.scores.join(', ')}] ✓ (mutated copy)</p>
         <p className="text-green-700">clone.address.city: {clone.address.city} ✓ (mutated copy)</p>
       </div>
+
+      <div className="rounded-md border border-border bg-card p-4 space-y-3">
+        <p className="text-sm font-semibold">✅ Why This Works</p>
+        <ul className="text-xs text-muted-foreground space-y-1 list-disc list-inside">
+          <li>Primitives are returned directly (immutable); objects, arrays, and Dates each get a new instance with recursively cloned values — no shared references.</li>
+          <li>A <code className="rounded bg-muted px-1">WeakMap</code> tracks already-cloned objects so circular references (e.g. <code className="rounded bg-muted px-1">a.self = a</code>) return the in-progress clone instead of infinite recursing.</li>
+          <li><code className="rounded bg-muted px-1">JSON.parse/stringify</code> would drop <code className="rounded bg-muted px-1">undefined</code>, convert Dates to strings, and throw on circular refs — this implementation handles all three correctly.</li>
+        </ul>
+        <div className="grid grid-cols-2 gap-3 mt-4">
+          <div className="rounded-md border border-red-800 bg-red-950/40 p-3">
+            <p className="text-xs font-semibold text-red-400 mb-2">❌ Before</p>
+            <pre className="text-xs text-red-200 whitespace-pre-wrap">{`// JSON round-trip clone
+const clone = JSON.parse(JSON.stringify(obj));
+// Date → string (lossy)
+// undefined → dropped
+// Circular → throws`}</pre>
+          </div>
+          <div className="rounded-md border border-green-800 bg-green-950/40 p-3">
+            <p className="text-xs font-semibold text-green-400 mb-2">✅ After</p>
+            <pre className="text-xs text-green-200 whitespace-pre-wrap">{`function deepClone(value, seen = new WeakMap()) {
+  if (seen.has(value)) return seen.get(value);
+  if (value instanceof Date) return new Date(value.getTime());
+  // recurse into arrays and objects
+}`}</pre>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

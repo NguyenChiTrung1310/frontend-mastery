@@ -166,6 +166,30 @@ export default function PromisePoolSolution(): React.JSX.Element {
       ) : null}
 
       {summary ? <p className="text-sm font-medium">{summary}</p> : null}
+
+      <div className="rounded-md border border-border bg-card p-4 space-y-3">
+        <p className="text-sm font-semibold">✅ Why This Works</p>
+        <ul className="text-xs text-muted-foreground space-y-1 list-disc list-inside">
+          <li>Exactly <code className="rounded bg-muted px-1">concurrency</code> worker coroutines run in parallel; each claims the next task index with a synchronous pre-increment before any <code className="rounded bg-muted px-1">await</code>, so no two workers race for the same slot.</li>
+          <li><code className="rounded bg-muted px-1">try/catch</code> inside each worker loop means a task failure doesn&apos;t kill the worker — it stores the error and continues filling remaining slots, maintaining full concurrency.</li>
+          <li>Results are written at <code className="rounded bg-muted px-1">results[idx]</code> regardless of completion order, so the output array always aligns with the input task order.</li>
+        </ul>
+        <div className="grid grid-cols-2 gap-3 mt-4">
+          <div className="rounded-md border border-red-800 bg-red-950/40 p-3">
+            <p className="text-xs font-semibold text-red-400 mb-2">❌ Before</p>
+            <pre className="text-xs text-red-200 whitespace-pre-wrap">{`// Run all at once — no concurrency limit
+await Promise.all(tasks.map(t => t()))
+// 100 tasks = 100 parallel requests`}</pre>
+          </div>
+          <div className="rounded-md border border-green-800 bg-green-950/40 p-3">
+            <p className="text-xs font-semibold text-green-400 mb-2">✅ After</p>
+            <pre className="text-xs text-green-200 whitespace-pre-wrap">{`// K workers, each loops until queue empty
+await Promise.all(
+  Array.from({ length: concurrency }, runNext)
+);`}</pre>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

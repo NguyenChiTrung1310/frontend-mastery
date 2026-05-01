@@ -35,6 +35,22 @@ When you detect any of these signals, read the matching `SKILL.md` *before* resp
 
 For everything else, the conventions in `AGENTS.md` apply.
 
+## 📋 Scaffolding Challenges
+
+When the user pastes a prompt that contains a `SCAFFOLD THIS CHALLENGE:` block,
+treat it as a direct execution instruction — **no clarifying questions, no confirmation**.
+Read `.claude/skills/challenge-author/SKILL.md` for the full workflow including:
+
+- The four required files and their conventions
+- The **interactive demo style guide** — how `boilerplate.tsx` must make the bug
+  visually observable and how `solution.tsx` must include an explanation card
+- The registry entry format
+- The verification checklist (always run `pnpm type-check` + `pnpm build`)
+
+The prompt will already contain everything needed: category, difficulty, slug,
+title, description, tags, estimated time, concept, boilerplate scenario, solution
+approach, and mock-api requirements. Extract those values and proceed.
+
 <!-- code-review-graph MCP tools -->
 ## MCP Tools: code-review-graph
 

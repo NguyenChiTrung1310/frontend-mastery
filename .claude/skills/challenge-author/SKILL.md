@@ -186,3 +186,75 @@ When stuck, look at these for shape:
 | JavaScript | `src/challenges/javascript/basic/debounce-throttle/` (utility function pattern) |
 | Next.js | `src/challenges/nextjs/advanced/streaming-suspense/` (Suspense + `use()` pattern) |
 | DSA | `src/challenges/dsa/intermediate/lru-cache/` (test-runner pattern) |
+
+## Interactive Demo Style Guide
+
+When scaffolding from a `SCAFFOLD THIS CHALLENGE:` prompt, apply this style
+to `boilerplate.tsx` and `solution.tsx`. This is inspired by the web-playground
+project's approach to making bugs tangible and fixes demonstrable.
+
+### `boilerplate.tsx` — make the bug visually observable
+
+The user must be able to **interact** with the broken state and immediately see
+something go wrong. A boilerplate that just returns wrong data silently is not
+enough. Follow these patterns:
+
+- **Timestamped event log panel**: a scrollable `<ul>` or `<div>` that records
+  what happened and when, with emoji prefixes (⏳ waiting, ⚠️ wrong, 🚨 error,
+  ✅ success). Append entries as the user interacts. Style with
+  `font-mono text-sm` and a `max-h-48 overflow-y-auto` container.
+- **Status badge strip**: at the bottom of the component, a row of small badges
+  showing current state — render count, error count, whether a leak is active, etc.
+- **The bug must be jarring**: the user should feel "that's clearly wrong", not
+  "hm, I wonder if something is off". Make the failure mode obvious and immediate.
+- **UI primitives inline**: define any needed `Card`, `Badge`, `Alert`, `Button`
+  as small `const` components at the top of the file using Tailwind CSS only.
+  Do NOT import from `@/components/ui` — these files are self-contained.
+- **Tailwind CSS only**: use Shadcn theme tokens (`bg-card`, `text-foreground`,
+  `border-border`, etc.) so the component respects dark/light mode automatically.
+
+### `solution.tsx` — same UI, fixed behavior, explanation included
+
+- **Same UI shape** as `boilerplate.tsx` — the split-view comparison must be
+  meaningful. Don't redesign the layout.
+- **Explanation card**: a styled `<div>` below the interactive area with:
+  - A title: `✅ Why This Works` or `🛡️ Solution Details`
+  - 3 short bullet points explaining the mechanism in plain language
+  - A **before/after code panel**: two small `<pre>` blocks side by side —
+    left red-tinted (`bg-red-950/40 border-red-800`), right green-tinted
+    (`bg-green-950/40 border-green-800`) — showing the critical diff
+- **Dense comments**: higher comment density than typical production code.
+  Each non-obvious line should explain WHY, not just WHAT.
+
+### Log panel reference implementation
+
+Both files can use this pattern for the event log:
+
+```tsx
+const [logs, setLogs] = useState<string[]>([]);
+const addLog = (msg: string) =>
+  setLogs(prev => [`[${new Date().toLocaleTimeString()}] ${msg}`, ...prev].slice(0, 50));
+
+// In JSX:
+<div className="rounded-md border bg-muted/30 p-3 font-mono text-xs max-h-48 overflow-y-auto space-y-1">
+  {logs.length === 0
+    ? <p className="text-muted-foreground">No events yet…</p>
+    : logs.map((log, i) => <p key={i}>{log}</p>)
+  }
+</div>
+```
+
+### Before/after code panel reference implementation
+
+```tsx
+<div className="grid grid-cols-2 gap-3 mt-4">
+  <div className="rounded-md border border-red-800 bg-red-950/40 p-3">
+    <p className="text-xs font-semibold text-red-400 mb-2">❌ Before</p>
+    <pre className="text-xs text-red-200 whitespace-pre-wrap">{`// broken code here`}</pre>
+  </div>
+  <div className="rounded-md border border-green-800 bg-green-950/40 p-3">
+    <p className="text-xs font-semibold text-green-400 mb-2">✅ After</p>
+    <pre className="text-xs text-green-200 whitespace-pre-wrap">{`// fixed code here`}</pre>
+  </div>
+</div>
+```

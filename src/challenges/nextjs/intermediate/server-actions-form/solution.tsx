@@ -89,6 +89,36 @@ export default function ServerActionsFormSolution(): React.JSX.Element {
       <p className="text-xs text-muted-foreground">
         Try: <code className="rounded bg-muted px-1">taken@example.com</code> to see the duplicate error.
       </p>
+
+      <div className="rounded-md border border-border bg-card p-4 space-y-3">
+        <p className="text-sm font-semibold">✅ Why This Works</p>
+        <ul className="text-xs text-muted-foreground space-y-1 list-disc list-inside">
+          <li><code className="rounded bg-muted px-1">useFormState</code> wires the action to the form and tracks its return value as state — no manual <code className="rounded bg-muted px-1">setLoading</code>, <code className="rounded bg-muted px-1">setError</code>, or <code className="rounded bg-muted px-1">setSuccess</code> needed.</li>
+          <li><code className="rounded bg-muted px-1">useFormStatus</code> must live inside a child component of the form — it reads pending state from React context set by the form boundary.</li>
+          <li>Inputs are uncontrolled — <code className="rounded bg-muted px-1">FormData</code> reads them by <code className="rounded bg-muted px-1">name</code> attribute, exactly like how HTML forms have always worked.</li>
+        </ul>
+        <div className="grid grid-cols-2 gap-3 mt-4">
+          <div className="rounded-md border border-red-800 bg-red-950/40 p-3">
+            <p className="text-xs font-semibold text-red-400 mb-2">❌ Before</p>
+            <pre className="text-xs text-red-200 whitespace-pre-wrap">{`const [loading, setLoading] = useState(false);
+const [error, setError] = useState('');
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  // manual fetch, error handling...
+};`}</pre>
+          </div>
+          <div className="rounded-md border border-green-800 bg-green-950/40 p-3">
+            <p className="text-xs font-semibold text-green-400 mb-2">✅ After</p>
+            <pre className="text-xs text-green-200 whitespace-pre-wrap">{`const [state, action] =
+  useFormState(subscribeAction, {});
+// state.error / state.success from action
+<form action={action}>
+  <SubmitButton /> {/* useFormStatus inside */}
+</form>`}</pre>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

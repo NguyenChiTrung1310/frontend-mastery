@@ -153,6 +153,29 @@ export default function TrieAutocompleteSolution(): React.JSX.Element {
           </li>
         )}
       </ul>
+
+      <div className="rounded-md border border-border bg-card p-4 space-y-3">
+        <p className="text-sm font-semibold">✅ Why This Works</p>
+        <ul className="text-xs text-muted-foreground space-y-1 list-disc list-inside">
+          <li>Prefix lookup is O(m) where m = prefix length — walk the tree one character at a time until reaching the prefix node or finding a missing branch.</li>
+          <li>The DFS <code className="rounded bg-muted px-1">collect</code> builds words by accumulating the path string, yielding only at <code className="rounded bg-muted px-1">isEnd</code> nodes — no full-word storage at every node.</li>
+          <li>The <code className="rounded bg-muted px-1">maxResults</code> early exit stops DFS after collecting enough suggestions — critical for short prefixes that would match thousands of words.</li>
+        </ul>
+        <div className="grid grid-cols-2 gap-3 mt-4">
+          <div className="rounded-md border border-red-800 bg-red-950/40 p-3">
+            <p className="text-xs font-semibold text-red-400 mb-2">❌ Before</p>
+            <pre className="text-xs text-red-200 whitespace-pre-wrap">{`// Linear scan — O(n * m) per query
+words.filter(w => w.startsWith(prefix))
+// gets slower as dictionary grows`}</pre>
+          </div>
+          <div className="rounded-md border border-green-800 bg-green-950/40 p-3">
+            <p className="text-xs font-semibold text-green-400 mb-2">✅ After</p>
+            <pre className="text-xs text-green-200 whitespace-pre-wrap">{`// O(m + k) — m=prefix, k=results
+trie.search(prefix, maxResults)
+// complexity independent of dict size`}</pre>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

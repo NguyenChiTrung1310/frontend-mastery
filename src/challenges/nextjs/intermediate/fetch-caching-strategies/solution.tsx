@@ -157,6 +157,30 @@ export default function FetchCachingStrategiesSolution(): React.JSX.Element {
         Click &quot;Refetch all&quot; — Config stays CACHE HIT, Inventory is always FRESH.
         Click &quot;Publish product update&quot; — Products clears and refetches once.
       </p>
+
+      <div className="rounded-md border border-border bg-card p-4 space-y-3">
+        <p className="text-sm font-semibold">✅ Why This Works</p>
+        <ul className="text-xs text-muted-foreground space-y-1 list-disc list-inside">
+          <li><code className="rounded bg-muted px-1">force-cache</code> locks data at build time and serves from CDN with zero latency — right for data that almost never changes like site config.</li>
+          <li>Tag-based revalidation lets you surgically clear one data source (<code className="rounded bg-muted px-1">revalidateTag(&apos;products&apos;)</code>) on CMS publish without invalidating the whole page.</li>
+          <li><code className="rounded bg-muted px-1">no-store</code> bypasses all caching — mandatory for live inventory where any cached value would be wrong.</li>
+        </ul>
+        <div className="grid grid-cols-2 gap-3 mt-4">
+          <div className="rounded-md border border-red-800 bg-red-950/40 p-3">
+            <p className="text-xs font-semibold text-red-400 mb-2">❌ Before</p>
+            <pre className="text-xs text-red-200 whitespace-pre-wrap">{`// Same cache strategy for all data
+fetch(url) // default: force-cache
+// live inventory shows stale stock
+// static config re-fetches every request`}</pre>
+          </div>
+          <div className="rounded-md border border-green-800 bg-green-950/40 p-3">
+            <p className="text-xs font-semibold text-green-400 mb-2">✅ After</p>
+            <pre className="text-xs text-green-200 whitespace-pre-wrap">{`fetch(configUrl, { cache: 'force-cache' })
+fetch(prodUrl, { next: { tags: ['products'] } })
+fetch(invUrl, { cache: 'no-store' })`}</pre>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -57,6 +57,34 @@ export default function ModulePatternIIFESolution(): React.JSX.Element {
         <button onClick={() => { counter.setStep(5); forceRender(n => n+1); }} className="rounded-md border px-3 py-1.5 text-sm hover:bg-accent">Step=5</button>
       </div>
       <p className="text-sm font-mono">Count: {counter.getCount()} (step: {counter.getStep()})</p>
+
+      <div className="rounded-md border border-border bg-card p-4 space-y-3">
+        <p className="text-sm font-semibold">✅ Why This Works</p>
+        <ul className="text-xs text-muted-foreground space-y-1 list-disc list-inside">
+          <li>The IIFE runs immediately and returns only the public API — internal variables (<code className="rounded bg-muted px-1">count</code>, <code className="rounded bg-muted px-1">step</code>) are closure-scoped and completely unreachable from outside.</li>
+          <li>&quot;Revealing&quot; means all functions are defined as privates first, then selectively exposed in the returned object — what you don&apos;t return, callers can never access.</li>
+          <li>Modern ES modules give you the same privacy via <code className="rounded bg-muted px-1">export</code> — but the IIFE pattern appears everywhere in pre-module legacy code and bundled libraries.</li>
+        </ul>
+        <div className="grid grid-cols-2 gap-3 mt-4">
+          <div className="rounded-md border border-red-800 bg-red-950/40 p-3">
+            <p className="text-xs font-semibold text-red-400 mb-2">❌ Before</p>
+            <pre className="text-xs text-red-200 whitespace-pre-wrap">{`// Global mutable state — fully exposed
+let count = 0;
+function increment() { count++; }
+// count is readable/writable by anyone`}</pre>
+          </div>
+          <div className="rounded-md border border-green-800 bg-green-950/40 p-3">
+            <p className="text-xs font-semibold text-green-400 mb-2">✅ After</p>
+            <pre className="text-xs text-green-200 whitespace-pre-wrap">{`const counter = (() => {
+  let count = 0; // private
+  return {
+    increment: () => { count++; },
+    getCount: () => count,
+  };
+})();`}</pre>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

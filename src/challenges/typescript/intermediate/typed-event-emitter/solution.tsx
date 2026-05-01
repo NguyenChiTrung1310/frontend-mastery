@@ -129,6 +129,34 @@ export default function TypedEventEmitterSolution(): React.JSX.Element {
           log.map((entry, i) => <li key={i}>{entry}</li>)
         )}
       </ul>
+
+      <div className="rounded-md border border-border bg-card p-4 space-y-3">
+        <p className="text-sm font-semibold">✅ Why This Works</p>
+        <ul className="text-xs text-muted-foreground space-y-1 list-disc list-inside">
+          <li>The generic <code className="rounded bg-muted px-1">K extends keyof T</code> binds event name to its exact payload type — TypeScript validates both sides of every <code className="rounded bg-muted px-1">on</code>/<code className="rounded bg-muted px-1">emit</code> call together.</li>
+          <li>Internal storage uses <code className="rounded bg-muted px-1">unknown</code> handlers so the Map has a concrete type; the type safety lives entirely at call sites via generic inference.</li>
+          <li><code className="rounded bg-muted px-1">once</code> stores a wrapper function (not the original) so <code className="rounded bg-muted px-1">off</code> can remove it by reference after first invocation.</li>
+        </ul>
+        <div className="grid grid-cols-2 gap-3 mt-4">
+          <div className="rounded-md border border-red-800 bg-red-950/40 p-3">
+            <p className="text-xs font-semibold text-red-400 mb-2">❌ Before</p>
+            <pre className="text-xs text-red-200 whitespace-pre-wrap">{`// Untyped — any event name, any payload
+class Emitter {
+  on(event: string, handler: Function) {}
+  emit(event: string, data: any) {}
+}`}</pre>
+          </div>
+          <div className="rounded-md border border-green-800 bg-green-950/40 p-3">
+            <p className="text-xs font-semibold text-green-400 mb-2">✅ After</p>
+            <pre className="text-xs text-green-200 whitespace-pre-wrap">{`class TypedEventEmitter<T extends Record<keyof T, unknown>> {
+  on<K extends keyof T>(
+    event: K,
+    handler: (payload: T[K]) => void
+  ): void
+}`}</pre>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

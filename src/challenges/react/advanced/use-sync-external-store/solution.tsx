@@ -94,6 +94,37 @@ export default function UseSyncExternalStoreSolution(): React.JSX.Element {
         no <code className="rounded bg-muted px-1">useState</code> or{' '}
         <code className="rounded bg-muted px-1">useEffect</code> needed.
       </p>
+
+      <div className="rounded-md border border-border bg-card p-4 space-y-3">
+        <p className="text-sm font-semibold">✅ Why This Works</p>
+        <ul className="text-xs text-muted-foreground space-y-1 list-disc list-inside">
+          <li><code className="rounded bg-muted px-1">useSyncExternalStore</code> reads the snapshot synchronously during commit — all components in one render pass see the same value, eliminating tearing.</li>
+          <li>The <code className="rounded bg-muted px-1">getServerSnapshot</code> third argument provides a safe SSR default, preventing hydration mismatches that <code className="rounded bg-muted px-1">useState+useEffect</code> causes.</li>
+          <li>React manages the subscription lifecycle automatically — no manual cleanup in <code className="rounded bg-muted px-1">useEffect</code> needed, and no missed events during concurrent renders.</li>
+        </ul>
+        <div className="grid grid-cols-2 gap-3 mt-4">
+          <div className="rounded-md border border-red-800 bg-red-950/40 p-3">
+            <p className="text-xs font-semibold text-red-400 mb-2">❌ Before</p>
+            <pre className="text-xs text-red-200 whitespace-pre-wrap">{`const [online, setOnline] = useState(true);
+useEffect(() => {
+  window.addEventListener('online', ...);
+  // initial value wrong on SSR
+  // tearing possible in concurrent mode
+}, []);`}</pre>
+          </div>
+          <div className="rounded-md border border-green-800 bg-green-950/40 p-3">
+            <p className="text-xs font-semibold text-green-400 mb-2">✅ After</p>
+            <pre className="text-xs text-green-200 whitespace-pre-wrap">{`useSyncExternalStore(
+  (cb) => {
+    window.addEventListener('online', cb);
+    return () => window.removeEventListener(...);
+  },
+  () => navigator.onLine, // client
+  () => true,             // server
+)`}</pre>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

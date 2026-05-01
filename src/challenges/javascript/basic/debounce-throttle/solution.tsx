@@ -105,6 +105,36 @@ export default function DebounceThrottleSolution(): React.JSX.Element {
         </button>
       </div>
       <p className="text-sm">Fires recorded: {count}</p>
+
+      <div className="rounded-md border border-border bg-card p-4 space-y-3">
+        <p className="text-sm font-semibold">✅ Why This Works</p>
+        <ul className="text-xs text-muted-foreground space-y-1 list-disc list-inside">
+          <li>Debounce resets the timer on every call — the function only fires after calls have stopped for <code className="rounded bg-muted px-1">wait</code> ms, collapsing a burst of calls into one.</li>
+          <li>Throttle uses a leading-edge approach: fires immediately on first call, then locks out further calls for <code className="rounded bg-muted px-1">wait</code> ms — ensuring at most one fire per interval.</li>
+          <li>Both use <code className="rounded bg-muted px-1">fn.apply(this, args)</code> to forward the calling context and arguments correctly to the wrapped function.</li>
+        </ul>
+        <div className="grid grid-cols-2 gap-3 mt-4">
+          <div className="rounded-md border border-red-800 bg-red-950/40 p-3">
+            <p className="text-xs font-semibold text-red-400 mb-2">❌ Before</p>
+            <pre className="text-xs text-red-200 whitespace-pre-wrap">{`function debounce(fn, wait) {
+  return fn; // stub — fires every call
+}
+function throttle(fn, wait) {
+  return fn; // stub — fires every call
+}`}</pre>
+          </div>
+          <div className="rounded-md border border-green-800 bg-green-950/40 p-3">
+            <p className="text-xs font-semibold text-green-400 mb-2">✅ After</p>
+            <pre className="text-xs text-green-200 whitespace-pre-wrap">{`function debounce(fn, wait) {
+  let timer;
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), wait);
+  };
+}`}</pre>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

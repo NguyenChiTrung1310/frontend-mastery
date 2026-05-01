@@ -39,6 +39,31 @@ export default function StreamingSolution(): React.JSX.Element {
       <Suspense fallback={<Skeleton title="Recommendations" />}>
         <RecsSection promise={recsPromise} />
       </Suspense>
+
+      <div className="rounded-md border border-border bg-card p-4 space-y-3">
+        <p className="text-sm font-semibold">✅ Why This Works</p>
+        <ul className="text-xs text-muted-foreground space-y-1 list-disc list-inside">
+          <li>Each <code className="rounded bg-muted px-1">{'<Suspense>'}</code> boundary is independent — when one section resolves, it reveals immediately without waiting for the others.</li>
+          <li>Promises are created with <code className="rounded bg-muted px-1">useMemo</code> so Suspense can re-throw the same promise on re-render without restarting the fetch.</li>
+          <li>The mental model mirrors RSC streaming: <code className="rounded bg-muted px-1">use(promise)</code> in a Server Component suspends that subtree while the rest of the page renders.</li>
+        </ul>
+        <div className="grid grid-cols-2 gap-3 mt-4">
+          <div className="rounded-md border border-red-800 bg-red-950/40 p-3">
+            <p className="text-xs font-semibold text-red-400 mb-2">❌ Before</p>
+            <pre className="text-xs text-red-200 whitespace-pre-wrap">{`// Blocks entire page until slowest resolves
+const [profile, orders, recs] =
+  await Promise.all([...]);
+// Nothing shows for ~2 seconds`}</pre>
+          </div>
+          <div className="rounded-md border border-green-800 bg-green-950/40 p-3">
+            <p className="text-xs font-semibold text-green-400 mb-2">✅ After</p>
+            <pre className="text-xs text-green-200 whitespace-pre-wrap">{`<Suspense fallback={<Skeleton />}>
+  <ProfileSection promise={profilePromise} />
+</Suspense>
+// Each section streams in independently`}</pre>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

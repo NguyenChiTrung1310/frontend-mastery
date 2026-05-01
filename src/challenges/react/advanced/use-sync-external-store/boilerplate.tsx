@@ -17,7 +17,7 @@
  *  - Guard matchMedia with `typeof window !== 'undefined'` for SSR safety.
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // ❌ TODO: replace with useSyncExternalStore
 function useOnlineStatus(): boolean {
@@ -70,6 +70,40 @@ export default function UseSyncExternalStoreBoilerplate(): React.JSX.Element {
   const width = useWindowWidth();
   const isMobile = useMediaQuery('(max-width: 768px)');
 
+  const [logs, setLogs] = useState<string[]>([]);
+  const renderCountRef = useRef(0);
+  renderCountRef.current += 1;
+  const renderCount = renderCountRef.current;
+
+  // Track the last-seen values to detect tearing: if two hooks read
+  // different values for the same browser event within one render, that's a tear.
+  const prevOnlineRef = useRef<boolean | null>(null);
+  const prevWidthRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const addLog = (msg: string): void =>
+      setLogs((prev) => [`[${new Date().toLocaleTimeString()}] ${msg}`, ...prev].slice(0, 50));
+
+    // Detect tearing: with useState+useEffect the initial render sees stale
+    // values (useState defaults), then a second render fires after effects run.
+    if (prevOnlineRef.current !== null && prevOnlineRef.current !== isOnline) {
+      addLog(`🔴 Tearing detected — online changed from ${String(prevOnlineRef.current)} to ${String(isOnline)} mid-render #${renderCount}`);
+    }
+    if (prevWidthRef.current !== null && prevWidthRef.current !== width) {
+      addLog(`⚠️ Width changed ${prevWidthRef.current}px → ${width}px (render #${renderCount})`);
+    }
+
+    const logEvent = (name: string, value: string): void =>
+      addLog(`📡 ${name}: ${value} (render #${renderCount})`);
+
+    logEvent('online', String(isOnline));
+    logEvent('width', `${width}px`);
+    logEvent('isMobile', String(isMobile));
+
+    prevOnlineRef.current = isOnline;
+    prevWidthRef.current = width;
+  });
+
   return (
     <div className="space-y-4">
       <div>
@@ -83,8 +117,21 @@ export default function UseSyncExternalStoreBoilerplate(): React.JSX.Element {
         <StatusCard label="Window width" value={`${width}px`} />
         <StatusCard label="Is mobile (≤768px)" value={isMobile ? 'Yes' : 'No'} />
       </div>
+
+      {/* Event log — shows each browser event + render cycle. With useState+useEffect,
+          watch for the "Tearing detected" entry when values disagree within one render. */}
+      <div className="rounded-md border bg-muted/30 p-3 font-mono text-xs max-h-48 overflow-y-auto space-y-1">
+        {logs.length === 0
+          ? <p className="text-muted-foreground">Interact with the browser to see events… (resize window, toggle network)</p>
+          : logs.map((log, i) => (
+            <p key={i} className={log.includes('🔴 Tearing') ? 'text-red-500 font-semibold' : ''}>{log}</p>
+          ))
+        }
+      </div>
+
       <p className="text-xs text-muted-foreground">
         Refactor each hook to use <code className="rounded bg-muted px-1">useSyncExternalStore</code>.
+        With the fix, the 🔴 tearing entries and double-render artefacts disappear.
       </p>
     </div>
   );

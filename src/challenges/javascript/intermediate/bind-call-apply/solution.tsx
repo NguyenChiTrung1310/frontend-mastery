@@ -72,6 +72,25 @@ export default function BindCallApplySolution(): React.JSX.Element {
         <p className="text-green-700">myApply: {String(applyResult)} ✓</p>
         <p className="text-green-700">myBind: {String(bindResult)} ✓</p>
       </div>
+
+      <div className="rounded-md border border-border bg-card p-4 space-y-3">
+        <p className="text-sm font-semibold">✅ Why This Works</p>
+        <ul className="text-xs text-muted-foreground space-y-1 list-disc list-inside">
+          <li><code className="rounded bg-muted px-1">call</code> works by temporarily grafting the function onto <code className="rounded bg-muted px-1">thisArg</code> as a Symbol-keyed method — calling it as <code className="rounded bg-muted px-1">obj[sym]()</code> makes JS set <code className="rounded bg-muted px-1">this</code> to <code className="rounded bg-muted px-1">obj</code>.</li>
+          <li><code className="rounded bg-muted px-1">apply</code> delegates to <code className="rounded bg-muted px-1">call</code> by spreading the args array — the entire implementation is one line.</li>
+          <li><code className="rounded bg-muted px-1">bind</code> returns a closure that closes over <code className="rounded bg-muted px-1">thisArg</code> and any pre-filled partial args — partial application comes for free.</li>
+        </ul>
+        <div className="grid grid-cols-2 gap-3 mt-4">
+          <div className="rounded-md border border-red-800 bg-red-950/40 p-3">
+            <p className="text-xs font-semibold text-red-400 mb-2">❌ Before</p>
+            <pre className="text-xs text-red-200 whitespace-pre-wrap">{"// Broken — 'this' is always wrong\nFunction.prototype.myCall = function(ctx) {\n  return this(); // ignores ctx entirely\n}"}</pre>
+          </div>
+          <div className="rounded-md border border-green-800 bg-green-950/40 p-3">
+            <p className="text-xs font-semibold text-green-400 mb-2">✅ After</p>
+            <pre className="text-xs text-green-200 whitespace-pre-wrap">{"Function.prototype.myCall = function(ctx, ...args) {\n  const sym = Symbol();\n  ctx[sym] = this;          // graft fn as method\n  const r = ctx[sym](...args); // call with correct 'this'\n  delete ctx[sym];\n  return r;\n}"}</pre>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

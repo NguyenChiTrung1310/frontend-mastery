@@ -232,6 +232,29 @@ export default function TreeDiffSolution(): React.JSX.Element {
           ))}
         </ul>
       ) : null}
+
+      <div className="rounded-md border border-border bg-card p-4 space-y-3">
+        <p className="text-sm font-semibold">✅ Why This Works</p>
+        <ul className="text-xs text-muted-foreground space-y-1 list-disc list-inside">
+          <li>Three passes — index old by key, walk new children for inserts/updates/deletes, then sweep old for remaining deletes — keep the algorithm O(n) per level.</li>
+          <li>Type change on same key triggers DELETE + INSERT because changing component type destroys the existing DOM/fiber instance — the same rule React itself uses.</li>
+          <li>LIS (Longest Increasing Subsequence) on kept nodes&apos; old indices finds the minimal set of MOVE operations — nodes already in relative order stay put.</li>
+        </ul>
+        <div className="grid grid-cols-2 gap-3 mt-4">
+          <div className="rounded-md border border-red-800 bg-red-950/40 p-3">
+            <p className="text-xs font-semibold text-red-400 mb-2">❌ Before</p>
+            <pre className="text-xs text-red-200 whitespace-pre-wrap">{`// Naive: compare by index, not key
+// [A,B,C] → [C,B,A] = 3 replaces
+// Keys ignored → full subtree destruction`}</pre>
+          </div>
+          <div className="rounded-md border border-green-800 bg-green-950/40 p-3">
+            <p className="text-xs font-semibold text-green-400 mb-2">✅ After</p>
+            <pre className="text-xs text-green-200 whitespace-pre-wrap">{`// Keyed + LIS: [A,B,C] → [C,B,A]
+// LIS = [C] length 1
+// Only A and B emit MOVE (2 ops)`}</pre>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

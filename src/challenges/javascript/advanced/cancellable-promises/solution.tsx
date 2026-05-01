@@ -128,6 +128,35 @@ export default function CancellablePromisesSolution(): React.JSX.Element {
           Start computation
         </button>
       )}
+
+      <div className="rounded-md border border-border bg-card p-4 space-y-3">
+        <p className="text-sm font-semibold">✅ Why This Works</p>
+        <ul className="text-xs text-muted-foreground space-y-1 list-disc list-inside">
+          <li><code className="rounded bg-muted px-1">AbortController</code> is created per run and stored in a ref — when the Cancel button fires or the component unmounts, <code className="rounded bg-muted px-1">controller.abort()</code> propagates the signal into the async work immediately.</li>
+          <li><code className="rounded bg-muted px-1">signal.throwIfAborted()</code> inside <code className="rounded bg-muted px-1">heavyComputation</code> checks the signal at each step boundary, throwing <code className="rounded bg-muted px-1">DOMException(&apos;AbortError&apos;)</code> to stop work cleanly.</li>
+          <li>The <code className="rounded bg-muted px-1">AbortError</code> guard in <code className="rounded bg-muted px-1">catch</code> distinguishes intentional cancellation from real errors — cancellation causes a silent return, not an error state.</li>
+        </ul>
+        <div className="grid grid-cols-2 gap-3 mt-4">
+          <div className="rounded-md border border-red-800 bg-red-950/40 p-3">
+            <p className="text-xs font-semibold text-red-400 mb-2">❌ Before</p>
+            <pre className="text-xs text-red-200 whitespace-pre-wrap">{`// No cancellation — runs to completion
+// even after unmount → setState warning
+useEffect(() => {
+  heavyComputation().then(setResult);
+}, []);`}</pre>
+          </div>
+          <div className="rounded-md border border-green-800 bg-green-950/40 p-3">
+            <p className="text-xs font-semibold text-green-400 mb-2">✅ After</p>
+            <pre className="text-xs text-green-200 whitespace-pre-wrap">{`const controller = new AbortController();
+heavyComputation(controller.signal, ...)
+  .catch(err => {
+    if (err.name === 'AbortError') return; // cancelled
+    setError(err.message);
+  });
+return () => controller.abort(); // cleanup`}</pre>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

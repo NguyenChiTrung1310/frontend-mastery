@@ -1,21 +1,29 @@
 import type { ChallengeEntry, ChallengePath } from '@/lib/types';
 
 // Markdown READMEs imported as raw strings via the webpack rule in next.config.mjs.
-import renderOptimizationReadme from '@/challenges/react/advanced/render-optimization/README.md';
-import debounceThrottleReadme from '@/challenges/javascript/basic/debounce-throttle/README.md';
-import genericUtilityTypesReadme from '@/challenges/typescript/intermediate/generic-utility-types/README.md';
-import streamingSuspenseReadme from '@/challenges/nextjs/advanced/streaming-suspense/README.md';
-import lruCacheReadme from '@/challenges/dsa/intermediate/lru-cache/README.md';
-import useFetchRaceConditionReadme from '@/challenges/react/intermediate/use-fetch-race-condition/README.md';
-import useSyncExternalStoreReadme from '@/challenges/react/advanced/use-sync-external-store/README.md';
-import promisePoolReadme from '@/challenges/javascript/intermediate/promise-pool/README.md';
-import cancellablePromisesReadme from '@/challenges/javascript/advanced/cancellable-promises/README.md';
-import discriminatedUnionsReadme from '@/challenges/typescript/basic/discriminated-unions/README.md';
-import typedEventEmitterReadme from '@/challenges/typescript/intermediate/typed-event-emitter/README.md';
-import serverActionsFormReadme from '@/challenges/nextjs/intermediate/server-actions-form/README.md';
-import fetchCachingStrategiesReadme from '@/challenges/nextjs/intermediate/fetch-caching-strategies/README.md';
-import trieAutocompleteReadme from '@/challenges/dsa/intermediate/trie-autocomplete/README.md';
 import treeDiffReadme from '@/challenges/dsa/advanced/tree-diff/README.md';
+import lruCacheReadme from '@/challenges/dsa/intermediate/lru-cache/README.md';
+import trieAutocompleteReadme from '@/challenges/dsa/intermediate/trie-autocomplete/README.md';
+import cancellablePromisesReadme from '@/challenges/javascript/advanced/cancellable-promises/README.md';
+import arrayMethodReimplementationReadme from '@/challenges/javascript/basic/array-method-reimplementation/README.md';
+import debounceThrottleReadme from '@/challenges/javascript/basic/debounce-throttle/README.md';
+import deepCloneReadme from '@/challenges/javascript/basic/deep-clone/README.md';
+import eventLoopTraceReadme from '@/challenges/javascript/basic/event-loop-trace/README.md';
+import thisBindingQuizReadme from '@/challenges/javascript/basic/this-binding-quiz/README.md';
+import asyncIteratorReadme from '@/challenges/javascript/intermediate/async-iterator/README.md';
+import bindCallApplyReadme from '@/challenges/javascript/intermediate/bind-call-apply/README.md';
+import customPromiseAllReadme from '@/challenges/javascript/intermediate/custom-promise-all/README.md';
+import modulePatternIifeReadme from '@/challenges/javascript/intermediate/module-pattern-iife/README.md';
+import promisePoolReadme from '@/challenges/javascript/intermediate/promise-pool/README.md';
+import streamingSuspenseReadme from '@/challenges/nextjs/advanced/streaming-suspense/README.md';
+import fetchCachingStrategiesReadme from '@/challenges/nextjs/intermediate/fetch-caching-strategies/README.md';
+import serverActionsFormReadme from '@/challenges/nextjs/intermediate/server-actions-form/README.md';
+import renderOptimizationReadme from '@/challenges/react/advanced/render-optimization/README.md';
+import useSyncExternalStoreReadme from '@/challenges/react/advanced/use-sync-external-store/README.md';
+import useFetchRaceConditionReadme from '@/challenges/react/intermediate/use-fetch-race-condition/README.md';
+import discriminatedUnionsReadme from '@/challenges/typescript/basic/discriminated-unions/README.md';
+import genericUtilityTypesReadme from '@/challenges/typescript/intermediate/generic-utility-types/README.md';
+import typedEventEmitterReadme from '@/challenges/typescript/intermediate/typed-event-emitter/README.md';
 
 /**
  * The registry is the single source of truth for all challenges.
@@ -243,6 +251,118 @@ export const CHALLENGES: readonly ChallengeEntry[] = [
     loaders: {
       boilerplate: () => import('@/challenges/dsa/advanced/tree-diff/boilerplate'),
       solution: () => import('@/challenges/dsa/advanced/tree-diff/solution'),
+    },
+  },
+  {
+    slug: 'this-binding-quiz',
+    title: 'This Binding Quiz',
+    category: 'javascript',
+    difficulty: 'basic',
+    description: 'Three snippets with broken this — fix each using .bind(), arrow functions, or explicit context.',
+    tags: ['this', 'closures', 'oop'],
+    estimatedMinutes: 20,
+    readme: thisBindingQuizReadme as unknown as string,
+    loaders: {
+      boilerplate: () => import('@/challenges/javascript/basic/this-binding-quiz/boilerplate'),
+      solution: () => import('@/challenges/javascript/basic/this-binding-quiz/solution'),
+    },
+  },
+  {
+    slug: 'array-method-reimplementation',
+    title: 'Reimplement Array Methods',
+    category: 'javascript',
+    difficulty: 'basic',
+    description: 'Build myMap, myFilter, myReduce, and myFlatMap from scratch using only for loops.',
+    tags: ['arrays', 'higher-order-functions', 'iteration'],
+    estimatedMinutes: 25,
+    readme: arrayMethodReimplementationReadme as unknown as string,
+    loaders: {
+      boilerplate: () => import('@/challenges/javascript/basic/array-method-reimplementation/boilerplate'),
+      solution: () => import('@/challenges/javascript/basic/array-method-reimplementation/solution'),
+    },
+  },
+  {
+    slug: 'deep-clone',
+    title: 'Deep Clone',
+    category: 'javascript',
+    difficulty: 'basic',
+    description: 'Implement deepClone handling nested objects, arrays, Dates, and circular references.',
+    tags: ['objects', 'recursion', 'cloning'],
+    estimatedMinutes: 30,
+    readme: deepCloneReadme as unknown as string,
+    loaders: {
+      boilerplate: () => import('@/challenges/javascript/basic/deep-clone/boilerplate'),
+      solution: () => import('@/challenges/javascript/basic/deep-clone/solution'),
+    },
+  },
+  {
+    slug: 'event-loop-trace',
+    title: 'Event Loop Trace',
+    category: 'javascript',
+    difficulty: 'basic',
+    description: 'Predict console output order across synchronous code, Promises (microtasks), and setTimeout (macrotasks).',
+    tags: ['event-loop', 'promises', 'async'],
+    estimatedMinutes: 20,
+    readme: eventLoopTraceReadme as unknown as string,
+    loaders: {
+      boilerplate: () => import('@/challenges/javascript/basic/event-loop-trace/boilerplate'),
+      solution: () => import('@/challenges/javascript/basic/event-loop-trace/solution'),
+    },
+  },
+  {
+    slug: 'custom-promise-all',
+    title: 'Implement Promise.all',
+    category: 'javascript',
+    difficulty: 'intermediate',
+    description: 'Re-implement Promise.all from scratch — resolve in order, reject fast, handle empty arrays.',
+    tags: ['promises', 'async', 'concurrency'],
+    estimatedMinutes: 30,
+    readme: customPromiseAllReadme as unknown as string,
+    loaders: {
+      boilerplate: () => import('@/challenges/javascript/intermediate/custom-promise-all/boilerplate'),
+      solution: () => import('@/challenges/javascript/intermediate/custom-promise-all/solution'),
+    },
+  },
+  {
+    slug: 'module-pattern-iife',
+    title: 'Module Pattern & IIFE',
+    category: 'javascript',
+    difficulty: 'intermediate',
+    description: 'Implement truly private state using the Revealing Module Pattern (IIFE + closure).',
+    tags: ['closures', 'iife', 'encapsulation'],
+    estimatedMinutes: 25,
+    readme: modulePatternIifeReadme as unknown as string,
+    loaders: {
+      boilerplate: () => import('@/challenges/javascript/intermediate/module-pattern-iife/boilerplate'),
+      solution: () => import('@/challenges/javascript/intermediate/module-pattern-iife/solution'),
+    },
+  },
+  {
+    slug: 'bind-call-apply',
+    title: 'Implement bind, call, apply',
+    category: 'javascript',
+    difficulty: 'intermediate',
+    description: 'Re-implement Function.prototype.bind/call/apply using only basic language primitives.',
+    tags: ['this', 'prototypes', 'functions'],
+    estimatedMinutes: 35,
+    readme: bindCallApplyReadme as unknown as string,
+    loaders: {
+      boilerplate: () => import('@/challenges/javascript/intermediate/bind-call-apply/boilerplate'),
+      solution: () => import('@/challenges/javascript/intermediate/bind-call-apply/solution'),
+    },
+  },
+  {
+    slug: 'async-iterator',
+    title: 'Async Iterators & for-await-of',
+    category: 'javascript',
+    difficulty: 'intermediate',
+    description: 'Build a paginating async generator and consume it with for-await-of for true streaming.',
+    tags: ['async', 'generators', 'iterators'],
+    estimatedMinutes: 35,
+    readme: asyncIteratorReadme as unknown as string,
+    loaders: {
+      boilerplate: () => import('@/challenges/javascript/intermediate/async-iterator/boilerplate'),
+      solution: () => import('@/challenges/javascript/intermediate/async-iterator/solution'),
     },
   },
 ] as const;

@@ -27,6 +27,7 @@ import optimisticUiRollbackReadme from '@/challenges/react/intermediate/optimist
 import capturedPropsVsRefsReadme from '@/challenges/react/intermediate/captured-props-vs-refs/README.md';
 import contextPerformanceProblemReadme from '@/challenges/react/intermediate/context-performance-problem/README.md';
 import useReducerComplexStateReadme from '@/challenges/react/intermediate/use-reducer-complex-state/README.md';
+import useLocalStorageSsrSafeReadme from '@/challenges/react/intermediate/use-local-storage-ssr-safe/README.md';
 import usecallbackReferentialStabilityReadme from '@/challenges/react/intermediate/usecallback-referential-stability/README.md';
 import discriminatedUnionsReadme from '@/challenges/typescript/basic/discriminated-unions/README.md';
 import genericUtilityTypesReadme from '@/challenges/typescript/intermediate/generic-utility-types/README.md';
@@ -132,6 +133,23 @@ export const CHALLENGES: readonly ChallengeEntry[] = [
     loaders: {
       boilerplate: () => import('@/challenges/react/intermediate/optimistic-ui-rollback/boilerplate'),
       solution: () => import('@/challenges/react/intermediate/optimistic-ui-rollback/solution'),
+    },
+  },
+  {
+    slug: 'use-local-storage-ssr-safe',
+    title: 'SSR-Safe useLocalStorage Hook',
+    category: 'react',
+    difficulty: 'intermediate',
+    description:
+      'Build a localStorage hook that survives server-side rendering and hydration mismatch.',
+    tags: ['hooks', 'localStorage', 'ssr', 'hydration', 'custom-hooks'],
+    estimatedMinutes: 30,
+    readme: useLocalStorageSsrSafeReadme as unknown as string,
+    loaders: {
+      boilerplate: () =>
+        import('@/challenges/react/intermediate/use-local-storage-ssr-safe/boilerplate'),
+      solution: () =>
+        import('@/challenges/react/intermediate/use-local-storage-ssr-safe/solution'),
     },
   },
   {

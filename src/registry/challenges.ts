@@ -25,6 +25,8 @@ import useEffectCleanupReadme from '@/challenges/react/intermediate/use-effect-c
 import staleClosureUseEffectReadme from '@/challenges/react/intermediate/stale-closure-useeffect/README.md';
 import optimisticUiRollbackReadme from '@/challenges/react/intermediate/optimistic-ui-rollback/README.md';
 import capturedPropsVsRefsReadme from '@/challenges/react/intermediate/captured-props-vs-refs/README.md';
+import contextPerformanceProblemReadme from '@/challenges/react/intermediate/context-performance-problem/README.md';
+import useReducerComplexStateReadme from '@/challenges/react/intermediate/use-reducer-complex-state/README.md';
 import usecallbackReferentialStabilityReadme from '@/challenges/react/intermediate/usecallback-referential-stability/README.md';
 import discriminatedUnionsReadme from '@/challenges/typescript/basic/discriminated-unions/README.md';
 import genericUtilityTypesReadme from '@/challenges/typescript/intermediate/generic-utility-types/README.md';
@@ -130,6 +132,40 @@ export const CHALLENGES: readonly ChallengeEntry[] = [
     loaders: {
       boilerplate: () => import('@/challenges/react/intermediate/optimistic-ui-rollback/boilerplate'),
       solution: () => import('@/challenges/react/intermediate/optimistic-ui-rollback/solution'),
+    },
+  },
+  {
+    slug: 'use-reducer-complex-state',
+    title: 'useReducer for Complex State',
+    category: 'react',
+    difficulty: 'intermediate',
+    description:
+      'Refactor tangled multi-useState into a single useReducer — predictable state transitions.',
+    tags: ['useReducer', 'state-management', 'complex-state', 'dispatch'],
+    estimatedMinutes: 35,
+    readme: useReducerComplexStateReadme as unknown as string,
+    loaders: {
+      boilerplate: () =>
+        import('@/challenges/react/intermediate/use-reducer-complex-state/boilerplate'),
+      solution: () =>
+        import('@/challenges/react/intermediate/use-reducer-complex-state/solution'),
+    },
+  },
+  {
+    slug: 'context-performance-problem',
+    title: 'Context Re-render Performance Problem',
+    category: 'react',
+    difficulty: 'intermediate',
+    description:
+      'See how a single context value change re-renders every consumer — and how to fix it.',
+    tags: ['context', 'performance', 're-renders', 'useMemo', 'split-context'],
+    estimatedMinutes: 35,
+    readme: contextPerformanceProblemReadme as unknown as string,
+    loaders: {
+      boilerplate: () =>
+        import('@/challenges/react/intermediate/context-performance-problem/boilerplate'),
+      solution: () =>
+        import('@/challenges/react/intermediate/context-performance-problem/solution'),
     },
   },
   {

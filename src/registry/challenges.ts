@@ -24,6 +24,7 @@ import useFetchRaceConditionReadme from '@/challenges/react/intermediate/use-fet
 import useEffectCleanupReadme from '@/challenges/react/intermediate/use-effect-cleanup/README.md';
 import staleClosureUseEffectReadme from '@/challenges/react/intermediate/stale-closure-useeffect/README.md';
 import optimisticUiRollbackReadme from '@/challenges/react/intermediate/optimistic-ui-rollback/README.md';
+import capturedPropsVsRefsReadme from '@/challenges/react/intermediate/captured-props-vs-refs/README.md';
 import usecallbackReferentialStabilityReadme from '@/challenges/react/intermediate/usecallback-referential-stability/README.md';
 import discriminatedUnionsReadme from '@/challenges/typescript/basic/discriminated-unions/README.md';
 import genericUtilityTypesReadme from '@/challenges/typescript/intermediate/generic-utility-types/README.md';
@@ -129,6 +130,21 @@ export const CHALLENGES: readonly ChallengeEntry[] = [
     loaders: {
       boilerplate: () => import('@/challenges/react/intermediate/optimistic-ui-rollback/boilerplate'),
       solution: () => import('@/challenges/react/intermediate/optimistic-ui-rollback/solution'),
+    },
+  },
+  {
+    slug: 'captured-props-vs-refs',
+    title: 'Captured Props vs Refs — Closures in Event Handlers',
+    category: 'react',
+    difficulty: 'intermediate',
+    description: 'Understand why event handlers capture stale props and how useRef solves it.',
+    tags: ['closures', 'useRef', 'event-handlers', 'props', 'stale-values'],
+    estimatedMinutes: 30,
+    readme: capturedPropsVsRefsReadme as unknown as string,
+    loaders: {
+      boilerplate: () =>
+        import('@/challenges/react/intermediate/captured-props-vs-refs/boilerplate'),
+      solution: () => import('@/challenges/react/intermediate/captured-props-vs-refs/solution'),
     },
   },
   {

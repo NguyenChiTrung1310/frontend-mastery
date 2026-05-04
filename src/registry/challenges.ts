@@ -19,6 +19,7 @@ import streamingSuspenseReadme from '@/challenges/nextjs/advanced/streaming-susp
 import fetchCachingStrategiesReadme from '@/challenges/nextjs/intermediate/fetch-caching-strategies/README.md';
 import serverActionsFormReadme from '@/challenges/nextjs/intermediate/server-actions-form/README.md';
 import renderOptimizationReadme from '@/challenges/react/advanced/render-optimization/README.md';
+import tokenRefreshInterceptorReadme from '@/challenges/react/advanced/token-refresh-interceptor/README.md';
 import useSyncExternalStoreReadme from '@/challenges/react/advanced/use-sync-external-store/README.md';
 import virtualizedListFromScratchReadme from '@/challenges/react/advanced/virtualized-list-from-scratch/README.md';
 import useFetchRaceConditionReadme from '@/challenges/react/intermediate/use-fetch-race-condition/README.md';
@@ -258,6 +259,23 @@ export const CHALLENGES: readonly ChallengeEntry[] = [
     loaders: {
       boilerplate: () => import('@/challenges/react/intermediate/use-fetch-race-condition/boilerplate'),
       solution: () => import('@/challenges/react/intermediate/use-fetch-race-condition/solution'),
+    },
+  },
+  {
+    slug: 'token-refresh-interceptor',
+    title: 'Token Refresh Interceptor — Silent Re-authentication',
+    category: 'react',
+    difficulty: 'advanced',
+    description:
+      'Implement a single-refresh queue so 5 parallel 401s trigger only one token refresh.',
+    tags: ['auth', 'axios', 'interceptor', 'queue', 'token-refresh', 'async'],
+    estimatedMinutes: 50,
+    readme: tokenRefreshInterceptorReadme as unknown as string,
+    loaders: {
+      boilerplate: () =>
+        import('@/challenges/react/advanced/token-refresh-interceptor/boilerplate'),
+      solution: () =>
+        import('@/challenges/react/advanced/token-refresh-interceptor/solution'),
     },
   },
   {

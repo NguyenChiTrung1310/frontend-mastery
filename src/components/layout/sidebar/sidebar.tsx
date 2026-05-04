@@ -5,6 +5,7 @@ import { Separator } from '@/components/ui/separator';
 import { CHALLENGES } from '@/registry/challenges';
 import type { ChallengeListItem } from '@/lib/challenge-list-item';
 import { SidebarBody } from './sidebar-body';
+import Image from 'next/image';
 
 function toListItems(): ChallengeListItem[] {
   return CHALLENGES.map(
@@ -28,7 +29,7 @@ export function Sidebar(): React.JSX.Element {
       <div className="px-6 py-5">
         <Link href="/" className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
-            <Atom className="h-5 w-5" />
+            <Image alt='Frontend Mastery' src="/assets/frontend-mastery.png" width={32} height={32} />
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-semibold leading-none">Frontend Mastery</span>

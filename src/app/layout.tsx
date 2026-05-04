@@ -12,6 +12,11 @@ export const metadata: Metadata = {
   title: 'Frontend Mastery — Local Learning Platform',
   description:
     'Solve JS, TS, React, Next.js, and DSA challenges by editing files in your IDE.',
+    icons: {
+      icon: '/assets/frontend-mastery.ico',
+      shortcut: '/assets/frontend-mastery.ico',
+      apple: '/assets/frontend-mastery.ico',
+  },
 };
 
 function getCommandItems(): ChallengeListItem[] {

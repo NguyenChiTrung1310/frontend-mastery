@@ -27,14 +27,15 @@ export function DashboardShell(): React.JSX.Element {
     <div className="min-h-screen">
       <section className="mx-auto max-w-6xl px-8 py-12">
         <div className="mb-10">
-          <Badge className="mb-4  bg-primary">
+          <Badge className="mb-4">
             <Sparkles className="mr-1 h-3 w-3" />
             Local-first
           </Badge>
           <h1 className="mb-3 text-4xl font-bold tracking-tight">Frontend Mastery</h1>
-          <p className="max-w-2xl text-lg text-muted-foreground">
+          <p className="text-lg text-muted-foreground">
             Pick a challenge. Filter by stack and level, or jump straight to one with{' '}
             <kbd className="rounded border bg-muted px-1.5 py-0.5 text-xs font-mono">⌘K</kbd>.
+            <br />
             Filters live in the URL — share away.
           </p>
         </div>

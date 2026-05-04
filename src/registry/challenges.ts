@@ -20,6 +20,7 @@ import fetchCachingStrategiesReadme from '@/challenges/nextjs/intermediate/fetch
 import serverActionsFormReadme from '@/challenges/nextjs/intermediate/server-actions-form/README.md';
 import renderOptimizationReadme from '@/challenges/react/advanced/render-optimization/README.md';
 import useSyncExternalStoreReadme from '@/challenges/react/advanced/use-sync-external-store/README.md';
+import virtualizedListFromScratchReadme from '@/challenges/react/advanced/virtualized-list-from-scratch/README.md';
 import useFetchRaceConditionReadme from '@/challenges/react/intermediate/use-fetch-race-condition/README.md';
 import useEffectCleanupReadme from '@/challenges/react/intermediate/use-effect-cleanup/README.md';
 import staleClosureUseEffectReadme from '@/challenges/react/intermediate/stale-closure-useeffect/README.md';
@@ -257,6 +258,22 @@ export const CHALLENGES: readonly ChallengeEntry[] = [
     loaders: {
       boilerplate: () => import('@/challenges/react/intermediate/use-fetch-race-condition/boilerplate'),
       solution: () => import('@/challenges/react/intermediate/use-fetch-race-condition/solution'),
+    },
+  },
+  {
+    slug: 'virtualized-list-from-scratch',
+    title: 'Virtualized List from Scratch',
+    category: 'react',
+    difficulty: 'advanced',
+    description: 'Build a windowed list that renders only visible rows — no library, pure math.',
+    tags: ['virtualization', 'performance', 'scroll', 'dom', 'windowing'],
+    estimatedMinutes: 55,
+    readme: virtualizedListFromScratchReadme as unknown as string,
+    loaders: {
+      boilerplate: () =>
+        import('@/challenges/react/advanced/virtualized-list-from-scratch/boilerplate'),
+      solution: () =>
+        import('@/challenges/react/advanced/virtualized-list-from-scratch/solution'),
     },
   },
   {

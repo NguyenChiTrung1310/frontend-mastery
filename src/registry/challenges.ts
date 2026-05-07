@@ -2,6 +2,7 @@ import type { ChallengeEntry, ChallengePath } from '@/lib/types';
 
 // Markdown READMEs imported as raw strings via the webpack rule in next.config.mjs.
 import treeDiffReadme from '@/challenges/dsa/advanced/tree-diff/README.md';
+import validParenthesesReadme from '@/challenges/dsa/basic/valid-parentheses/README.md';
 import lruCacheReadme from '@/challenges/dsa/intermediate/lru-cache/README.md';
 import trieAutocompleteReadme from '@/challenges/dsa/intermediate/trie-autocomplete/README.md';
 import cancellablePromisesReadme from '@/challenges/javascript/advanced/cancellable-promises/README.md';
@@ -390,6 +391,20 @@ export const CHALLENGES: readonly ChallengeEntry[] = [
     loaders: {
       boilerplate: () => import('@/challenges/nextjs/intermediate/fetch-caching-strategies/boilerplate'),
       solution: () => import('@/challenges/nextjs/intermediate/fetch-caching-strategies/solution'),
+    },
+  },
+  {
+    slug: 'valid-parentheses',
+    title: 'Valid Parentheses',
+    category: 'dsa',
+    difficulty: 'basic',
+    description: 'Use a stack to validate bracket pairs — LeetCode 20, the gateway to stack problems.',
+    tags: ['stack', 'string', 'brackets', 'leetcode'],
+    estimatedMinutes: 20,
+    readme: validParenthesesReadme as unknown as string,
+    loaders: {
+      boilerplate: () => import('@/challenges/dsa/basic/valid-parentheses/boilerplate'),
+      solution: () => import('@/challenges/dsa/basic/valid-parentheses/solution'),
     },
   },
   {
